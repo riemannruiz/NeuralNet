@@ -41,13 +41,13 @@ for k, b_k in enumerate(params.b):
 Yhat,_ = neural_model(X, params)
 
 # Calcular la función de costo RMSE
-J = cost_fun_rmse_reg_(Y, Yhat, params)
+J,_,_,_ = cost_fun_rmse_reg_(Y, Yhat, params)
 
-# Entrenamiento de la red neuronal
+#%% Entrenamiento de la red neuronal
 n_iter = 5000
 params, model = Grad_Desc_training_(X, Y, params, n_iter)
 
-# Los resultados finales se encuentran en model.inputs[-1]
+#%% Los resultados finales se encuentran en model.inputs[-1]
 Y2 = model.inputs[-1]
 
 #Traceback (most recent call last):
