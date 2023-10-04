@@ -17,21 +17,21 @@ y = 4 * x1 * np.sin(10 * x1) + x1 * np.exp(x1) * np.cos(20 * x1)
 X = x1.reshape(-1, 1)
 Y = y.reshape(-1, 1)
 
-#%% Cargar los archivos CSV en DataFrames
-df_W1 = pd.read_csv('W1.csv', header=None)  
-df_W2 = pd.read_csv('W2.csv', header=None)
-df_W3 = pd.read_csv('W3.csv', header=None)
-df_b1 = pd.read_csv('b1.csv', header=None)
-df_b2 = pd.read_csv('b2.csv', header=None)
-df_b3 = pd.read_csv('b3.csv', header=None)
+# #%% Cargar los archivos CSV en DataFrames
+# df_W1 = pd.read_csv('W1.csv', header=None)  
+# df_W2 = pd.read_csv('W2.csv', header=None)
+# df_W3 = pd.read_csv('W3.csv', header=None)
+# df_b1 = pd.read_csv('b1.csv', header=None)
+# df_b2 = pd.read_csv('b2.csv', header=None)
+# df_b3 = pd.read_csv('b3.csv', header=None)
 
-# Convierte el DataFrame en una matriz NumPy
-W1 = df_W1.to_numpy()  
-W2 = df_W2.to_numpy()
-W3 = df_W3.to_numpy()
-b1 = df_b1.to_numpy()
-b2 = df_b2.to_numpy()
-b3 = df_b3.to_numpy()
+# # Convierte el DataFrame en una matriz NumPy
+# W1 = df_W1.to_numpy()  
+# W2 = df_W2.to_numpy()
+# W3 = df_W3.to_numpy()
+# b1 = df_b1.to_numpy()
+# b2 = df_b2.to_numpy()
+# b3 = df_b3.to_numpy()
 
 
 
@@ -39,15 +39,14 @@ b3 = df_b3.to_numpy()
 params = ini_network(X, Y, [10, 5])
 
 #params.hidden_fun[0] = f_sigmoid  
-
 params.eta = 0.1
 
-params.W[0] = W1
-params.W[1] = W2
-params.W[2] = W3
-params.b[0] = b1
-params.b[1] = b2
-params.b[2] = b3
+# params.W[0] = W1
+# params.W[1] = W2
+# params.W[2] = W3
+# params.b[0] = b1
+# params.b[1] = b2
+# params.b[2] = b3
 #%%
 # Obtener estimación de la red neuronal
 Yhat, model = neural_model(X, params)
