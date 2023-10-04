@@ -2,6 +2,7 @@ import numpy as np
 from libraries_.model import Model
 from libraries_.neural_layer_ import neural_layer
 from libraries_.delta_output import delta_output
+from libraries_.delta_hidden_ import delta_hidden_
 
 
 def Grad_Desc_training_(X, Y, params, max_iter):
@@ -54,13 +55,17 @@ def Grad_Desc_training_(X, Y, params, max_iter):
 
         model.loss[iter_ - 1], dJ_dY, _, _ = params.loss(Y, model.inputs[-1], params)
 
-        # Asignar el valor de dJ_dY a model.loss
-        # model.loss[iter_ - 1] = dJ_dY
-        # model.loss[iter_ - 1], _,dJ_dY, _, _ = params.loss(Y, model.inputs[-1], params)
 
         # Propagación de la información hacia atrás para calcular deltas
-        for k in range(n_capas - 1, 0, -1):
-            model.deltas[k] = delta_output(Y, model.inputs[k + 1], model.phi_[k], params)
+        k = n_capas-1
+        model.deltas[k] = delta_output(Y, model.inputs[k + 1], model.phi_[k], params)
+        model.b_gradient[k] = model.deltas[k].T @ bias
+        model.W_gradient[k] = model.deltas[k].T @ model.inputs[k] + lambda_ * params.W[k]
+        model.d_b[k] = -eta * model.b_gradient[k]
+        model.d_W[k] = -eta * model.W_gradient[k]
+        
+        for k in range(n_capas - 2, -1, -1):
+            model.deltas[k] = delta_hidden_(model.phi_[k], params.W[k+1],model.deltas[k+1])
             model.b_gradient[k] = model.deltas[k].T @ bias
             model.W_gradient[k] = model.deltas[k].T @ model.inputs[k] + lambda_ * params.W[k]
             model.d_b[k] = -eta * model.b_gradient[k]
@@ -75,17 +80,17 @@ def Grad_Desc_training_(X, Y, params, max_iter):
             model.dW_hist[iter_] = model.d_W
             model.db_hist[iter_] = model.d_b
 
-        if iter_ % n_disp == 0 and params.view_process:
-            progress = 100 * (iter_ / max_iter)
-            print(f'Progress {progress:.1f}%: {iter} epocs was reached, with a loss {model.loss[iter_]:.3f}')
+        # if iter_ % n_disp == 0 and params.view_process:
+        #     progress = 100 * (iter_ / max_iter)
+        #     print(f'Progress {progress:.1f}%: {iter} epocs was reached, with a loss {model.loss[iter_]:.3f}')
 
         iter_ += 1
 
-        if model.loss[iter_ - 1] <= params.tol_loss or abs(np.mean(dJ_dY)) <= params.tol_dJ:
-            print('The loss function or gradient reach the desired values.')
-            break
+        # if model.loss[iter_ - 1] <= params.tol_loss or abs(np.mean(dJ_dY)) <= params.tol_dJ:
+        #     print('The loss function or gradient reach the desired values.')
+        #     break
 
 
-    if params.view_process:
-        print(f'{iter_ - 1} epocs was reached, with a loss {model.loss[iter_ - 1]:.3f}', end='\r')
+    # if params.view_process:
+    #     print(f'{iter_ - 1} epocs was reached, with a loss {model.loss[iter_ - 1]:.3f}', end='\r')
     return params, model
