@@ -5,6 +5,8 @@ from libraries_.Grad_Desc_training_ import Grad_Desc_training_
 from libraries_.f_sigmoid import f_sigmoid
 from libraries_.neural_model_ import neural_model
 from libraries_.ini_network import ini_network
+from libraries_.Levenberg_marquart_training import Levenberg_Marquart_training_
+
 from libraries_.cost_fun_rmse_reg_ import cost_fun_rmse_reg_
 import time
 
@@ -58,12 +60,14 @@ J, _, _, _ = cost_fun_rmse_reg_(Y, Yhat, params)
 
 #%% Entrenamiento de la red neuronal
 
-n_iter = 5000
+n_iter = 50
 start_time = time.time()
-params, model = Grad_Desc_training_(X, Y, params, n_iter)
+#params, model = Grad_Desc_training_(X, Y, params, n_iter)
+params, model = Levenberg_Marquart_training_(X, Y, params, n_iter)
+
 end_time = time.time()
 
-# Calcula el tiempo transcurrido en segundos
+# Calcular el tiempo transcurrido en segundos
 elapsed_time = end_time - start_time
 
 # Imprime el tiempo transcurrido

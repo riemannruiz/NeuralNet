@@ -22,7 +22,7 @@ class Parameters:
         self.loss = None
         self.lambda_reg = None
         self.eta = None
-        self.mu_1 = None
+        self.mu = [0.5] 
         self.mu_f = None
         self.mu_limits = None
         self.batch_size = None
@@ -81,7 +81,6 @@ def ini_network(X = None, Y =None, neurons_hidden_layer = None, **kwargs):
     params.loss = cost_fun_rmse_reg_
     params.lambda_reg = 0  # Inicializacion del coeficiente de regularizacion
     params.eta = 0.1  # Inicializacion del coeficiente de aprendizaje
-    params.mu_1 = 0.5  # Coeficiente de Levemberg-Marquart
     params.mu_f = 2  # Factor de rescalamiento para el entrenamiento Levemberg-Marquart
     params.mu_limits = [1e-5, 10000]  # Limites para el valor de mu en el entrenamiento Levemberg-Marquart
     params.batch_size = 10000  # Cantidad de datos usada para cada actualizacion
