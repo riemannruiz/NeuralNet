@@ -12,13 +12,14 @@ def Levenberg_Marquart_training_(X, Y, params, max_iter):
     beta = params.mu_f  # factor de reescalamiento de mu
     n_capas = len(params.W)  # Número de capas de la red neuronal
     model.inputs = [np.array([]) for _ in range(n_capas + 1)]
+
     model.hidden_out = [np.array([]) for _ in range(n_capas)]
     model.phi_ = [np.array([]) for _ in range(n_capas)]
     model.loss = np.ones(max_iter) * 10000  # Inicializar como una lista de números de punto flotante en lugar de cadenas
     model.inputs[0] = X
     params.W0 = params.W.copy()
     params.b0 = params.b.copy()
-    
+
     n_disp = max(1, round(max_iter * 0.01))
 
     print('%%%%%%%%%%%%%%%%%%%%%%%')
@@ -51,18 +52,16 @@ def Levenberg_Marquart_training_(X, Y, params, max_iter):
         inputs_end = model.inputs[-1]
         hidden_out = model.hidden_out[-1]  # Salidas ocultas de la ultima capa
         phi_out = model.phi_[-1]  # Derivadas de la ultima capa
-
         for s in range(Y.shape[1]):
             model.inputs[-1] = inputs_end[:, s]
             model.hidden_out[-1] = hidden_out[:, s]
             model.phi_[-1] = phi_out[:, s]
-            params.W[-1] = params_.W[-1][s, :].reshape(1, -1) 
-            params.b[-1] = params_.b[-1][s, :].reshape(1, -1)  
+            params.W[-1] = params_.W[-1][s, :].reshape(1, -1)
+            params.b[-1] = params_.b[-1][s, :].reshape(1, -1)
 
             Jac[:, (s - 1) * n_samples:s * n_samples] = Jacobian_k_opt_v2(Y[:, s], model, params, s)
 
         # Restauracion de los parametros originales de la red neuronal (la modificacion se hizo solo para el calcula del Jacobiano)
-
         params = params_
         model.inputs[-1] = inputs_end
         model.hidden_out[-1] = hidden_out
@@ -80,6 +79,7 @@ def Levenberg_Marquart_training_(X, Y, params, max_iter):
             # Obtener los pesos en vector columna para agregarlo como termino
             # de regularizacion
             Wtot = np.zeros((params.nw_total, 1))
+
             for layer in range(n_capas, 0, -1):
                 Wtmp = np.concatenate((np.zeros((params.W[layer - 1].shape[0], 1)), params.W[layer - 1]), axis=1)
                 Wtot[params.indx_W_Jac[layer - 1], 0] = Wtmp.flatten()
@@ -96,11 +96,10 @@ def Levenberg_Marquart_training_(X, Y, params, max_iter):
                 params.W[k] += model.d_W[k]  # Actualizacion de pesos
 
             # Calculo de la nueva funcion de costo
-  
+
 
             Y_hat_ = neural_model(model.inputs, params)
             J_loss_ = params.loss(Y, Y_hat_, params)
-
             # Actualizacion del parametro mu
 
             if J_loss_ >= model.loss[iter_]:
