@@ -17,8 +17,8 @@ def Jacobian_k_opt_v2(Y, model, params, s):
 
     Jac = np.zeros((params.nw_total, n_samples))
 
-    for k in range(n_capas - 1):
-        model.inputs[k + 1], _, _ = neural_layer(model.inputs[k], params.W[k], params.b[k], params.hidden_fun[k])
+    # for k in range(n_capas - 1):
+        # model.inputs[k + 1], _, _ = neural_layer(model.inputs[k], params.W[k], params.b[k], params.hidden_fun[k])
 
 
 
@@ -26,9 +26,9 @@ def Jacobian_k_opt_v2(Y, model, params, s):
     k = n_capas - 1
     model.deltas[k] = delta_output_lm(Y, model.inputs[k + 1], model.phi_[k], params)
 
-    model.dE_dW[k] = model.deltas[k] * np.concatenate((bias, model.inputs[k]), axis=1) + lambda_ * np.concatenate(
+    model.dE_dW[k] = np.reshape(model.deltas[k],(n_samples,1)) * np.concatenate((bias, model.inputs[k]), axis=1) + lambda_ * np.concatenate(
         ([0], params.W[k].flatten())) / n_samples
-    Jac[(s - 1) * (params.n_hidden[-1] + 1):s * (params.n_hidden[-1] + 1), :] = model.dE_dW[k].T
+    Jac[(s) * (params.n_hidden[-1] + 1):(s+1) * (params.n_hidden[-1] + 1), :] = model.dE_dW[k].T
 
 
     # for k in range(n_capas - 2, -1, -1):

@@ -61,7 +61,7 @@ J, _, _, _ = cost_fun_rmse_reg_(Y, Yhat, params)
 
 n_iter = 50
 start_time = time.time()
-#params, model = Grad_Desc_training_(X, Y, params, n_iter)
+# params, model = Grad_Desc_training_(X, Y, params, n_iter)
 params, model = Levenberg_Marquart_training_(X, Y, params, n_iter)
 
 end_time = time.time()
