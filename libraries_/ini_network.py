@@ -92,14 +92,14 @@ def ini_network(X = None, Y =None, neurons_hidden_layer = None, **kwargs):
 
     #  Creacion de la estructura con los indices de los pesos dentro del Jacobiano
     idx0_w = 1
-    for k in range(len(params.W)):
+    for k in range(len(params.W)-1,-1,-1):
         if k == 0 and params.output_delay > 0:
             f, c = params.W[k].shape
         else:
             f, c = params.W[k].shape
 
         idx1_w = idx0_w - 1 + f * (c + 1)
-        params.indx_W_Jac[k] = list(range(idx0_w, idx1_w + 1))
+        params.indx_W_Jac[k] = list(range(idx0_w-1, idx1_w))
         idx0_w = idx1_w + 1
 
     return params

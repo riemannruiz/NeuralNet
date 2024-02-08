@@ -14,8 +14,7 @@ def neural_model(X, params):
     model.inputs[0] = X  # Inicializa la entrada
     # Capas ocultas
     for k in range(n_capas - 1):
-        model.inputs[k + 1], model.hidden_out[k], _ = neural_layer(model.inputs[k], params.W[k], params.b[k],
-                                                                   params.hidden_fun[k])
+        model.inputs[k + 1], model.hidden_out[k], _ = neural_layer(model.inputs[k], params.W[k], params.b[k],params.hidden_fun[k])
 
         # Imprime los tamaños para verificar
 
